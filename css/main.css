@@ -1,0 +1,75 @@
+ * {
+     padding: 0;
+     margin: 0;
+ }
+ .content {
+     display: flex;
+
+ }
+
+ .projects-list {
+     flex: 1;
+ }
+
+ .project-content {
+     flex: 4;
+ }
+
+ .todo-item {
+     display: flex;
+     background-color: cadetblue;
+     border-radius: .2rem;
+     padding: 2rem;
+     margin: 1rem 0;
+     max-width: 900px;
+     align-items: center;
+ }
+
+ .todo-item.todo-inactive {
+
+ }
+ .todo-item div {
+     margin: 0 2rem 0 0;
+ }
+ .todo-buttons .fa {
+    padding: 0.5rem;
+    margin: -.5rem 0;
+ }
+
+.todo-buttons .fa:hover {
+    cursor: pointer;    
+ }
+
+.todo-item .fa-circle-thin {
+    display: flex;
+    font-size: 2rem;
+    color: rgba(0, 0, 0, 0.5)
+}
+.todo-item.todo-inactive .fa-circle-thin {
+    display: none;
+}
+.todo-item .fa-check-circle-o {
+    display: none;
+}
+.todo-item.todo-inactive .fa-check-circle-o {
+    display: flex;
+    font-size: 2rem;
+    color: rgba(0, 0, 0, 0.5)
+}
+
+ .todo-add-button {
+    display: flex;     
+}
+
+.todo-add-button.active {
+    display: none;
+}
+
+.todo-add-popup {
+    display: none;
+}
+
+.todo-add-popup.active {
+    display: flex;
+}
+
