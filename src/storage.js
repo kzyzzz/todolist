@@ -1,61 +1,83 @@
-import {Project, Todo} from "./index"
+import {Todo} from "./index"
 
 export default class Storage {
-    
-    static removeProject (title) {
-        //Code to implement
-        concole.log(`removed ${title}`);
-        return true;
+
+    static removeProject(title) {
+        const newList = [];
+        this.todoList.map((todo, index) => {
+            if (todo.project != title) {
+                newList.push(todo);
+            }
+        })
+        this.todoList = newList;
     }
-
-    static getProject(title) {
-        let projectList = Storage.getProjects();
-
-        return projectList.find((item) => item.title == title);
-    }
-
-    static addTodo(projectName, title, description, dueDate, priority) {
-        
-        let projectList = Storage.getProjects();
-        projectList.find((project) => project.title == projectName).addTodo(title, description, dueDate, priority);
-
-        Storage.setProjects(projectList);
-    }
-
-    static updateProjectTodo(projectName, title, updater) {
-        
-        let projectList = Storage.getProjects();
-        projectList.find((project) => project.title == projectName).updateTodo(title, updater);
-
-        Storage.setProjects(projectList);
-    }
-
-    static removeTodo(projectName, title) {
-        
-        let projectList = Storage.getProjects();
-        projectList.find((project) => project.title == projectName).removeTodo(title);
-
-        Storage.setProjects(projectList);
-    }
-
     static getProjects() {
-        const projectList = JSON.parse(localStorage.getItem('myProjects'));
-
-        projectList.map((item, index) => {
-            projectList[index] = Object.assign(new Project(), item);
-        });
-
-        projectList.forEach((project) =>{
-            project.items.map((item, index) =>{
-                project.items[index] = Object.assign(new Todo(), item);
-            });
-        });
-
-        return projectList;
-
+        return this.projects;
     }
 
-    static setProjects(projectList) {
-        localStorage.setItem('myProjects', JSON.stringify(projectList));
+    static addProject(title) {
+        if (this.projects.indexOf(title) === -1) this.projects.push(title);
+        console.log(this.projects);
+    }
+
+
+    static getList() {
+        return this.todoList;
+    }
+
+    static getTodo(title) {
+
+        return this.todoList.find((item) => item.getTitle() == title);
+    }
+
+
+    static updateTodo(title, updater) {
+
+        Storage.getTodo(title).update(updater);
+        Storage.setTodoList(this.todoList);
+    }
+
+    static addTodo(title) {
+        let todo = new Todo(title);
+        this.todoList.push(todo);
+
+        Storage.setTodoList(this.todoList);
+    }
+
+    static removeTodo(title) {
+        console.log(this.todoList)
+        let itemToRemove = this.todoList.find((todo) => {
+            return (todo.getTitle() == title)
+        });
+        this.todoList.splice(this.todoList.indexOf(itemToRemove), 1);
+
+        Storage.setTodoList(this.todoList);
+    }
+
+    static loadTodoList() {
+        const savedList = JSON.parse(localStorage.getItem('TodoLis'));
+        const projects = ['default'];
+        let todoList = [];
+
+        if (savedList != null)  {
+
+            savedList.map((item) => {
+                todoList.push(Object.assign(new Todo(), item));
+            });
+
+            todoList.map((todo) => {
+                if (projects.indexOf(todo.project) === -1) projects.push(todo.project);
+            });
+            
+        }
+
+        this.todoList = todoList;
+        this.projects = projects;
+
+        return todoList;
+    }
+
+    static setTodoList(todoList) {
+        localStorage.setItem('TodoLis', JSON.stringify(todoList));
     }
 }
