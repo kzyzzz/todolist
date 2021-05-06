@@ -15,37 +15,38 @@
      flex: 4;
  }
 
- .todo-item {
-     display: flex;
-     background-color: cadetblue;
-     border-radius: .2rem;
-     padding: 2rem;
-     margin: 1rem 0;
-     max-width: 900px;
-     align-items: center;
- }
+.todo-item {
+    display: flex;
+    background-color: cadetblue;
+    border-radius: .2rem;
+    padding: 2rem;
+    margin: 1rem 1rem;
+    max-width: 900px;
+    align-items: center;
+    transition: all 1s;
+}
 
- .todo-item.todo-inactive {
-
- }
- .todo-item div {
-     margin: 0 2rem 0 0;
- }
- .todo-buttons .fa {
+.todo-item.todo-inactive {
+    opacity: 0.4;
+}
+.todo-item div {
+    margin: 0 2rem 0 0;
+}
+.todo-buttons .fa {
     padding: 0.5rem;
     margin: -.5rem 0;
- }
+}
 
 .todo-buttons .fa:hover {
     cursor: pointer;    
  }
 
-.todo-item .fa-circle-thin {
+.todo-item .fa-circle-o {
     display: flex;
     font-size: 2rem;
     color: rgba(0, 0, 0, 0.5)
 }
-.todo-item.todo-inactive .fa-circle-thin {
+.todo-item.todo-inactive .fa-circle-o {
     display: none;
 }
 .todo-item .fa-check-circle-o {
@@ -57,19 +58,24 @@
     color: rgba(0, 0, 0, 0.5)
 }
 
- .todo-add-button {
+.todo-add-button,
+.project-add-button {
     display: flex;     
 }
 
-.todo-add-button.active {
+.todo-add-button.active, 
+.project-add-button.active {
     display: none;
 }
 
-.todo-add-popup {
+.todo-add-popup,
+.project-add-popup {
     display: none;
+    align-items: center;
 }
 
-.todo-add-popup.active {
+.todo-add-popup.active,
+.project-add-popup.active {
     display: flex;
 }
 
