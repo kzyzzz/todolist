@@ -1,112 +1,114 @@
 import {Storage, Todo} from "./index"
+import { formatISO, isToday, parseISO } from 'date-fns'
 
 export default class UI {
+
     static loadProjects() {
+
         const projectsList = document.getElementById('projects-list');
 
-        projectsList.innerHTML = `<div class="project-title">
-                                    <button class="project-button">Today</button>
-                                    </div>`;
-
         Storage.getProjects().forEach(project => {
-            projectsList.innerHTML += 
-                `<div class="project-title">
-                 <button class="project-button">${project}</button>
-                 </div>`;
-        });
+            let projectDiv = document.createElement('div');
+            let projectHeader = document.createElement('div');
+            let projectTitle = document.createElement('div');
+            let projectItems = document.createElement('div');
 
-        //project list footer
-        projectsList.innerHTML +=
-                `<div class="project-add-button">
-                    <button><i class="fa fa-plus"></i></button>                                                                 
-                </div>
-                <div class="project-add-popup">
-                    <input type="tetx" placeholder="title">
-                    <div class="todo-buttons">
-                                <i class="fa fa-check project-add"></i>
-                                <i class="fa fa-times project-add"></i>
-                    </div>
-                </div>`;
-                
+            projectDiv.classList.add('project');
+            projectHeader.classList.add('project-button');
+            projectHeader.id = project;
+
+            let items = Storage.getList().reduce((acc, item) => {
+                return (item.project == project) ? acc + 1 : acc;
+            }, 0);
+
+            projectTitle.textContent = project;
+
+            projectItems.textContent = `(${items})`;
+      
+            projectHeader.appendChild(projectTitle);
+            projectHeader.appendChild(projectItems);
+            projectDiv.appendChild(projectHeader);
+
+            projectsList.appendChild(projectDiv);
+
+            UI.loadProjectContent(project);
+        });  
 
         UI.initProjectListButtons();
     }
 
+    static expandProject(title) {
+        const projectButton = document.getElementById(`${title}`);
+        projectButton.parentElement.classList.toggle('expand');
+    }
+
     static loadProjectContent(title) {
 
-        const projectContent = document.getElementById('project-content');
-        projectContent.innerHTML  = `<div class="project-title">${title}</div>`;
+        let projectButton = document.getElementById(`${title}`);
 
-
-        if (title == 'Today') {
-            let d = new Date;
-
-            let todayDate = d.getFullYear() + '-' + ('0' + (d.getMonth()+1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
-
-            Storage.getList().forEach((todo) => {
-
-                    if (todo.dueDate == todayDate) {
-                               
-                        UI.loadTodo(todo);
-                    }
-            });
-
-            
-        }
-        else {
-            Storage.getList().forEach((todo) => {
-            
-                if (todo.project == title) {
-                    let todoClassName = "todo-item";
-                    if (todo.status == 'inactive') todoClassName += " todo-inactive";
-
-                        UI.loadTodo(todo);
-                    }
-            });
-
-            //project footer
-            projectContent.innerHTML += `<div class="todo-add-button">
-                                            <button><i class="fa fa-plus"></i></button>                                                                 
-                                        </div>
-
-                                        <div class="todo-add-popup">
-                                            <input type="tetx" placeholder="title">
-                                            <div class="todo-buttons">
-                                                        <i class="fa fa-check"></i>
-                                                        <i class="fa fa-times"></i>
-                                            </div>
-                                        </div>`;
+        if (projectButton.parentElement.children[1] != undefined) {
+            //clear project to update if exists
+            projectButton.parentElement.removeChild(projectButton.parentElement.lastChild);
         }
 
-        UI.initProjectButtons();
+        let projectContent = document.createElement('div');
+        projectContent.setAttribute('class', 'project-content');
+           
+
+        Storage.getList().forEach((todo) => {
+        
+            if (todo.project == title) {
+
+                    projectContent.appendChild(UI.loadTodo(todo));  
+
+                }
+        });
+           
+        projectButton.parentElement.appendChild(projectContent);
+   
     }
 
     static loadTodo(todo) {
         
-        const projectContent = document.getElementById('project-content');
-        let todoClassName = "todo-item";
-        if (todo.status == 'inactive') todoClassName += " todo-inactive";
-        
-                    projectContent.innerHTML += `
-                    <div class="${todoClassName}">  
+        const newTodo = document.createElement('div');
 
-                        <div class="todo-buttons">
-                                <i class="fa fa-circle-o"></i>
-                                <i class="fa fa-check-circle-o"></i>
-                        </div>
+        newTodo.classList.add("todo-item");
+        if (todo.status == 'inactive') newTodo.classList.add("todo-inactive");
 
-                        
-                        <div>${todo.title}</div>
-                        <div>${todo.description}</div>
-                        <div>${todo.dueDate}</div>
-                        <div><input type="date" class="due-date-picker"></div>
+        const circle = document.createElement('i');
+        circle.classList.add('fa', 'fa-circle-o');
 
-                        <div class="todo-buttons">
-                                <i class="fa fa-pencil-square-o"></i>
-                                <i class="fa fa-trash"></i>
-                        </div>
-                    
-                    </div>`;
+        circle.addEventListener('click', (e) => {
+            console.log(e.target.parentElement.children[2].textContent);
+            UI.setStatus(e.target.parentElement.children[2].textContent, 'inactive');
+        });
+
+        const checkCircle = document.createElement('i');
+        checkCircle.classList.add('fa', 'fa-check-circle-o');
+
+        checkCircle.addEventListener('click', (e) => {
+            console.log(e.target.parentElement.children[2].textContent);
+            UI.setStatus(e.target.parentElement.children[2].textContent, 'active');
+        });
+      
+
+        const title = document.createElement('div');
+        title.textContent = todo.title;
+
+        const description = document.createElement('div');
+        description.textContent = todo.description;
+
+        const dueDate = document.createElement('div');
+        dueDate.textContent = todo.dueDate;
+
+
+        newTodo.appendChild(circle);
+        newTodo.appendChild(checkCircle);
+        newTodo.appendChild(title);
+        newTodo.appendChild(description);
+        newTodo.appendChild(dueDate);
+
+        return newTodo;
     } 
 
     static initProjectListButtons() {
@@ -116,60 +118,87 @@ export default class UI {
 
         projectButtons.forEach((button) => {
             button.addEventListener('click', (e) =>{
-                let projectName = e.target.textContent;
-
-                UI.loadProjectContent(projectName);
+                console.log(e.target)
+                let projectName = e.target.children[0].textContent;
+                UI.expandProject(projectName);
             });
         });
 
 
-        projectAddButton.addEventListener('click', (e) => {
-            console.log('click')
-            document.querySelector('.project-add-button').classList.add('active');
-            document.querySelector('.project-add-popup').classList.add('active');
-        });
+        // projectAddButton.addEventListener('click', (e) => {
+        //     console.log('click')
+        //     document.querySelector('.project-add-button').classList.add('active');
+        //     document.querySelector('.project-add-popup').classList.add('active');
+        // });
     }
 
     
     static initProjectButtons() {
 
-        let dueDatePicker = document.querySelectorAll('.due-date-picker');
-        let todoButtons = document.querySelectorAll('.todo-buttons');
-        let todoAddButton = document.querySelector('.todo-add-button');
+        // let projectDiv = document.getElementById(`${title}`).parentElement;
+       
+        // let todoButtons = projectDiv.querySelectorAll('.todo-buttons');
+        // console.log(projectDiv);
+        // console.log(todoButtons);
 
-        todoAddButton.addEventListener('click', (e) => {
-            console.log(e.target.lastChild);
+        // let todoAddButton = projectDiv.querySelector('.todo-add-button');
 
-            document.querySelector('.todo-add-button').classList.add('active');
-            document.querySelector('.todo-add-popup').classList.add('active');
-        });
+        // if (todoAddButton != null) {
+        //     todoAddButton.addEventListener('click', (e) => {
+        //         console.log(e.target.lastChild);
 
-        todoButtons.forEach((button) => {
-            button.addEventListener('click', (e) => {
-                if (e.target.classList.contains('fa-circle-o')) UI.setStatus(e.target, 'inactive');
-                if (e.target.classList.contains('fa-check-circle-o')) UI.setStatus(e.target, 'active');
-                if (e.target.classList.contains('fa-trash')) UI.removeTodo(e.target);
-                if (e.target.classList.contains('fa-check')) UI.addItem(e.target);
-                if (e.target.classList.contains('fa-times')) {
-                        document.querySelector('.todo-add-button').classList.remove('active');
-                        document.querySelector('.todo-add-popup').classList.remove('active');
-                    }
-            });
-        });
+        //         title.querySelector('.todo-add-button').classList.add('active');
+        //         title.querySelector('.todo-add-popup').classList.add('active');
+        //     });
+        // }
 
-        dueDatePicker.forEach((picker) => {
-            picker.addEventListener('change', (e) => {
+        // todoButtons.forEach((button) => {
+        //     button.addEventListener('click', (e) => {
+        //         if (e.target.classList.contains('fa-circle-o')) UI.setStatus(e.target, 'inactive');
+        //         if (e.target.classList.contains('fa-check-circle-o')) UI.setStatus(e.target, 'active');
+        //         if (e.target.classList.contains('fa-trash')) UI.removeTodo(e.target);
+        //         if (e.target.classList.contains('fa-check')) UI.addItem(e.target);
+        //         if (e.target.classList.contains('fa-pencil-square-o')) UI.editItem(e.target);
+                
+        //         if (e.target.classList.contains('fa-times')) {
+        //                 title.querySelector('.todo-add-button').classList.remove('active');
+        //                 title.querySelector('.todo-add-popup').classList.remove('active');
+        //             }
+        //     });
+        // });
 
-                let dueDate = e.target.value;
+         //let dueDatePicker = document.querySelectorAll('.due-date-picker');
+        // dueDatePicker.forEach((picker) => {
+        //     picker.addEventListener('change', (e) => {
 
-                let todoName = e.target.parentElement.parentElement.children[1].textContent;
-                let projectName = e.target.parentNode.parentNode.parentNode.firstChild.textContent;
+        //         let dueDate = formatISO(new Date(e.target.value), { representation: 'date' });
 
-                Storage.updateTodo(todoName, {dueDate});
+        //         let todoName = e.target.parentElement.parentElement.children[1].textContent;
+        //         let projectName = e.target.parentNode.parentNode.parentNode.firstChild.textContent;
 
-                UI.loadProjectContent(projectName);
-            });
-        });
+        //         Storage.updateTodo(todoName, {dueDate});
+
+        //         UI.loadProjectContent(projectName);
+        //     });
+        // });
+    }
+
+    static editItem(target) {
+        console.log(target);
+
+        const todo = Storage.getTodo(target.parentElement.parentElement.children[1].textContent);
+
+        console.log(todo);
+        let editor =  target.parentElement.parentElement;
+        editor.innerHTML = `<div class='todo-editor'>
+                                <textarea id='todo-title' type=text placeholder='Title' maxlength="50" rows='1'></textarea>
+                                <textarea id='todo-description' type=text placeholder='Description' rows='4'></textarea>
+
+                            </div>`;
+
+        document.getElementById('todo-title').value = todo.title;
+        document.getElementById('todo-description').value = todo.description;
+
     }
 
     static addItem(target) {
@@ -202,13 +231,10 @@ export default class UI {
 
     }
 
-    static setStatus(target, status) {
+    static setStatus(title, status) {
 
-        const todoTitle = target.parentElement.nextElementSibling.textContent;
-        const projectName = target.parentElement.parentElement.parentElement.firstChild.textContent;
-
-        Storage.updateTodo(todoTitle, {status});
-        UI.loadProjectContent(projectName);
+        Storage.updateTodo(title, {status});
+        UI.loadProjectContent(Storage.getTodo(title).project);
     }
 
     static removeTodo(target) {
