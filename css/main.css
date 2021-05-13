@@ -1,26 +1,60 @@
- * {
-     padding: 0;
-     margin: 0;
- }
- .content {
-     display: flex;
+* {
+    padding: 0;
+    margin: 0;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
 
- }
+}
 
- .projects-list {
-     flex: 1;
- }
+.projects-list {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.project {
+    display: flex;
+    flex-direction: column;
+    max-height: 3rem;
+    transition: all 0.2s ease-in-out;
+}
 
- .project-content {
-     flex: 4;
- }
+.expand {
+    max-height: 1000px;
+    transition: all .5s ease-out;
+}
+
+.project-content {
+    transition: max-height 2s ease-out;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-button {   
+    margin-top: 1rem;
+    min-height: 2rem;
+    border-bottom: 1px solid green;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.project-button:hover {
+    cursor: pointer;
+}
 
 .todo-item {
     display: flex;
-    background-color: cadetblue;
-    border-radius: .2rem;
-    padding: 2rem;
-    margin: 1rem 1rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid cadetblue;
+    padding: 1rem;
+    margin: 1rem 0 0 2rem;
     max-width: 900px;
     align-items: center;
     transition: all 1s;
@@ -39,7 +73,7 @@
 
 .todo-buttons .fa:hover {
     cursor: pointer;    
- }
+}
 
 .todo-item .fa-circle-o {
     display: flex;
@@ -79,3 +113,16 @@
     display: flex;
 }
 
+.todo-editor {
+    display: flex;
+    flex-direction: column;
+    width: 100%;    
+}
+textarea {
+    width: 100%;
+    resize: none;
+    border: none;
+    outline: none;
+    padding: 0.5rem 1rem;
+    
+}
