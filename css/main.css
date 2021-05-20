@@ -1,18 +1,47 @@
+.dark-primary-color    { background: #7B1FA2; }
+.default-primary-color { background: #9C27B0; }
+.light-primary-color   { background: #E1BEE7; }
+.text-primary-color    { color: #FFFFFF; }
+.accent-color          { background: #FF5722; }
+.primary-text-color    { color: #212121; }
+.secondary-text-color  { color: #757575; }
+.divider-color         { border-color: #BDBDBD}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,100&display=swap');
+
 * {
     padding: 0;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 .content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    max-width: 800px;
     margin: 0 auto;
+    min-height: 100vh;
+
+}
+.nav-panel {
+    display: flex;
+    flex: 1;
+    order: 5;
+    padding: 1rem;
+    align-items: flex-start;
+    justify-content: center;
+    border-right: .1rem solid #BDBDBD;
 
 }
 
+.project-container {
+    flex: 4;
+    order: 2;
+    position: relative;
+    max-width: 1100px;
+    background: #FAFAFA;
+    border-right: 0.1rem solid #BDBDBD;
+}
+
 .projects-list {
-    flex: 1;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -31,18 +60,20 @@
 
 .project-content {
     transition: max-height 2s ease-out;
-    overflow: hidden;
+    overflow: auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: column;   
 }
 
 .project-button {   
-    margin-top: 1rem;
-    min-height: 2rem;
-    border-bottom: 1px solid green;
+    padding: 1rem;
+    min-height: 3rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    z-index: 999;
+    box-shadow: rgba(0, 0, 0, 0.19) 1px 10px 20px, rgba(0, 0, 0, 0.23) 1px 1px 1px;
+   
 }
 
 .project-button:hover {
@@ -51,21 +82,166 @@
 
 .todo-item {
     display: flex;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid cadetblue;
-    padding: 1rem;
-    margin: 1rem 0 0 2rem;
-    max-width: 900px;
     align-items: center;
-    transition: all 1s;
+    min-height: 4rem;
+    padding: 1rem;
+    border-bottom: 0.1rem solid #BDBDBD;
+}
+.priority-box {
+    min-width: 1rem;
+    align-self: stretch;
+    margin-top: -1rem;
+    height: 1.5rem;
+    position: relative;
+}
+
+.priority-box::after {
+    content: '';
+    width: 0; 
+    height: 0; 
+    position: absolute;
+    top: 1.5rem;
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;   
+
+}
+
+.box-red {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.23);
+    background-color: #B0273B;
+}
+.box-red::after {
+    border-top: 0.5rem solid #B0273B;
+}
+
+.box-green {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.23);
+    background-color: #27B09C;
+}
+.box-green::after {
+    border-top: 0.5rem solid #27B09C;
+}
+
+.box-yellow {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.23);
+    background-color: #B09C27;
+}
+.box-yellow::after {
+    border-top: 0.5rem solid #B09C27;
+}
+
+.left-div {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+.center-div {
+    margin: 0 1rem;
+    flex: 10;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+.right-div {
+    display: flex;
+    flex-direction: column;
+    flex: 5;
+    align-self: stretch;
+    justify-content: space-around;
+    align-items: flex-end;
+    
+}
+.todo-title {
+    font-size: 1rem;
+
+}
+.todo-description {
+    font-size: 0.8rem;
+}
+.todo-due-date {
+    font-size: 0.8rem;
+    font-style: italic;
+}
+.todo-item .fa-pencil-square-o {
+    opacity: 0;
+    cursor: pointer;
+    padding: 1rem;
+    margin: -1rem;
+    transition: all 0.5s;
+}
+
+.todo-item:hover .fa-pencil-square-o {
+    opacity: 1;
+}
+
+
+
+.btn-round {
+    cursor: pointer;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    border: none;
+    transition: all 0.3s;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.23),0 3px 10px rgba(0,0,0,0.16);
+}
+.btn-round:hover {
+    transform: rotate(90deg);
+    scale: 1.05;
+
+}
+
+
+.todo-add-popup {
+    display: none;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px -5px 5px;
+    position: absolute;
+    z-index: 999;
+    top: 5rem;
+    width: 100%;
+    height: calc(100vh - 5rem);
+    background: #212121;
+}
+
+.todo-add-popup.active {
+    display: flex;
+}
+
+#todo-form {
+    display: flex;
+    padding: 2rem;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+input[type=text], textarea{
+    box-sizing: border-box;
+    resize: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 1px;
+    padding: 0.5rem;
+}
+.form-delete {
+    display: none;
+}
+
+button {
+    margin-top: 1rem;
+}
+label {
+    color: #eee;
 }
 
 .todo-item.todo-inactive {
     opacity: 0.4;
 }
-.todo-item div {
-    margin: 0 2rem 0 0;
-}
+
 .todo-buttons .fa {
     padding: 0.5rem;
     margin: -.5rem 0;
@@ -78,7 +254,6 @@
 .todo-item .fa-circle-o {
     display: flex;
     font-size: 2rem;
-    color: rgba(0, 0, 0, 0.5)
 }
 .todo-item.todo-inactive .fa-circle-o {
     display: none;
@@ -89,40 +264,19 @@
 .todo-item.todo-inactive .fa-check-circle-o {
     display: flex;
     font-size: 2rem;
-    color: rgba(0, 0, 0, 0.5)
 }
 
-.todo-add-button,
-.project-add-button {
-    display: flex;     
-}
 
-.todo-add-button.active, 
-.project-add-button.active {
-    display: none;
-}
-
-.todo-add-popup,
-.project-add-popup {
-    display: none;
-    align-items: center;
-}
-
-.todo-add-popup.active,
-.project-add-popup.active {
-    display: flex;
-}
-
-.todo-editor {
-    display: flex;
-    flex-direction: column;
-    width: 100%;    
-}
-textarea {
-    width: 100%;
-    resize: none;
-    border: none;
-    outline: none;
-    padding: 0.5rem 1rem;
-    
+@media screen 
+  and (min-device-width: 1200px) 
+  and (min-width: 768px) 
+  and (-webkit-min-device-pixel-ratio: 1) {
+      .content {
+          flex-direction: row;
+      }
+      .nav-panel {
+          order: 1;
+          max-width: 300px;
+          justify-content: unset;
+      }
 }

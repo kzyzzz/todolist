@@ -8,8 +8,38 @@
   </head>
   <body>
     <div class="content">
-      <div class="projects-list" id="projects-list"></div>
-      
+      <div class="nav-panel dark-primary-color" id="nav-panel"></div>
+      <div class="project-container">
+        <div class="projects-list" id="projects-list"></div>   
+        <div class="todo-add-popup" id="todo-add-popup">
+    
+            <div id='todo-form'>
+              <input type="text" id="todo-title" placeholder="Title" required>              
+              <textarea id="todo-description" style="height:100px" placeholder="Todo descripion"></textarea>
+              <div>
+                <label for="project-select">Priority: </label>
+                <select id="todo-priority-select" name="priority-select">
+                  <option value="not set"> </option>
+                  <option value="low">low</option>
+                  <option value="medium">medium</option>
+                  <option value="hight">hight</option>
+                </select>
+                <label for="project-select">Project: </label>
+                <select id="todo-project-select" name="project-select"></select>
+                <label for="todo-due-date">Due date: </label>
+                <input type="date" name="todo-due-date" id="todo-due-date">
+              </div>
+              <div>
+                <button class="form-btn" id="todo-ok">OK</button>
+                <button class="form-btn" id="todo-cancel">Cancel</button>
+              </div>
+              <div>
+                <button class="form-delete" id="todo-delete">Delete</button>
+              </div>
+            </div>
+
+        </div>
+      </div>   
       
       <script src="./main.js"></script>
     </div>
