@@ -221,6 +221,7 @@
     width: 100%;
 }
 input[type=text], textarea{
+    font-size: inherit;
     box-sizing: border-box;
     resize: none;
     border: none;
@@ -234,7 +235,8 @@ input[type=text], textarea{
     display: none;
 }
 
-button {
+button, input, select {
+    font-size: inherit;
     margin-top: 1rem;
 }
 label {
