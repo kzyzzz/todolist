@@ -6,6 +6,7 @@ export default class Todo {
         this.priority = 'priority';
         this.project = 'default';
         this.status = 'active';
+        this.priority = 'not set';
     }
 
     getTitle() {

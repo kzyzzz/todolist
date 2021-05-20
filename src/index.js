@@ -11,6 +11,7 @@ Storage.loadTodoList();
 //console.log(Storage.getList());
 
 UI.loadProjects();
+UI.expandProject('default');
 //Storage.addProject('new');
 //Storage.updateTodo('nnnnn', {project: 'New2'});
 
