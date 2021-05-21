@@ -186,7 +186,16 @@ export default class UI {
             container.classList.toggle('active');
         });
 
-        container.addEventListener('mouseout', (e) =>{
+        container.addEventListener('mouseover', (e) => {
+            container.classList.toggle('active');
+        });
+
+        //fot touchscreen
+        container.addEventListener('touchstart', (e) => {
+            container.classList.toggle('active');
+        });
+
+        container.addEventListener('touchend', (e) => {
             container.classList.toggle('active');
         });
 
