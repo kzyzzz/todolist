@@ -1,11 +1,12 @@
 import {Storage, Todo} from "./index"
-import { formatISO, isToday, parseISO } from 'date-fns'
+import { formatISO, isToday, isThisWeek, parseISO } from 'date-fns'
 
 export default class UI {
 
-    static loadProjects() {
+    static loadProjects(date = '') {
 
         const projectsList = document.getElementById('projects-list');
+        projectsList.innerHTML = '';
 
         Storage.getProjects().forEach(project => {
             let projectDiv = document.createElement('div');
@@ -32,13 +33,12 @@ export default class UI {
 
             projectsList.appendChild(projectDiv);
 
-            UI.loadProjectContent(project);
+            UI.loadProjectContent(project, date);
         });  
 
-        UI.insertAddTodoButton();
 
         UI.initProjectListButtons();
-        UI.initPopupButtons();
+   
     }
 
     static expandProject(title) {
@@ -46,15 +46,14 @@ export default class UI {
         projectButton.parentElement.classList.toggle('expand');
     }
 
-    static loadProjectContent(title) {
+    static loadProjectContent(title, date='') {
 
         let projectButton = document.getElementById(`${title}`);
 
-        let items = Storage.getList().reduce((acc, item) => {
-            return (item.project == title) ? acc + 1 : acc;
-        }, 0);
-
-        projectButton.querySelector('.project-items-counter').textContent = `${items}`;
+        // let items = Storage.getList().reduce((acc, item) => {
+        //     return (item.project == title) ? acc + 1 : acc;
+        // }, 0);
+        let items = 0;
 
         if (projectButton.parentElement.children[1] != undefined) {
             //clear project to update if exists
@@ -69,10 +68,29 @@ export default class UI {
         
             if (todo.project == title) {
 
-                    projectContent.appendChild(UI.loadTodo(todo));  
+                    if (date == '') {
+                        projectContent.appendChild(UI.loadTodo(todo));  
+                        items += 1;
+                    }
+
+                    if (date == 'today') {
+                        if (isToday(parseISO(todo.dueDate))) {
+                            projectContent.appendChild(UI.loadTodo(todo));
+                            items += 1;
+                        }
+                    }
+
+                    if (date == 'thisWeek') {
+                        if (isThisWeek(parseISO(todo.dueDate))) {
+                            projectContent.appendChild(UI.loadTodo(todo));
+                            items += 1;
+                        }
+                    }
 
                 }
         });
+
+        projectButton.querySelector('.project-items-counter').textContent = `${items}`;
            
         projectButton.parentElement.appendChild(projectContent);
         UI.initTodoButtons(title);
@@ -160,19 +178,110 @@ export default class UI {
         return newTodo;
     }
 
-    static insertAddTodoButton() {
-        let todoAddButton = document.createElement('button');
-        todoAddButton.classList.add('btn-round');
-
-        //style
-        todoAddButton.classList.add('accent-color');
-        todoAddButton.classList.add('text-primary-color');
-
-        todoAddButton.id = 'todo-add-btn';
-        todoAddButton.textContent = '+';
+    static initNavPanel() {
         
         let container = document.querySelector('.nav-panel');
-        container.appendChild(todoAddButton);
+
+        container.addEventListener('mouseover', (e) => {
+            container.classList.toggle('active');
+        });
+
+        container.addEventListener('mouseout', (e) =>{
+            container.classList.toggle('active');
+        });
+
+        const menu = document.createElement('ul');
+
+        const home = document.createElement('li');
+        home.classList.add('nav-button');
+        home.id = 'todo-home';
+        home.innerHTML = `<span class="material-icons">
+        home
+        </span>home`;
+
+        const add = document.createElement('li');
+        add.classList.add('nav-button');
+        add.id = 'todo-add';
+        add.innerHTML = `<span class="material-icons">
+        post_add
+        </span>new Todo`;
+
+        const today = document.createElement('li');
+        today.classList.add('nav-button');
+        today.id = 'todo-today';
+        today.innerHTML = `<span class="material-icons">
+        today
+        </span>today`;
+
+        const week = document.createElement('li');
+        week.classList.add('nav-button');
+        week.id = 'todo-week';
+        week.innerHTML = `<span class="material-icons">
+        date_range
+        </span>week`;
+
+        const info = document.createElement('li');
+        info.classList.add('nav-button');
+        info.id = 'todo-info';
+        info.innerHTML = `<span class="material-icons">
+        info
+        </span>info`;
+
+       // menu.appendChild(home);
+        menu.appendChild(add);
+        menu.appendChild(today);
+        menu.appendChild(week);
+        menu.appendChild(info);
+
+        container.appendChild(menu);
+
+        UI.initNavButtons();
+    }
+
+    static initNavButtons() {
+        const navButtons = document.querySelectorAll('.nav-button');
+        navButtons.forEach((button) => {
+            button.addEventListener('click', (e) => {
+                UI.triggerNavButton(e.target);
+            });
+        });
+    }
+
+    static triggerNavButton(target) {
+        if (target.parentElement.id == 'todo-add') {
+            UI.openPopup();
+            UI.initPopupProjects();
+        }
+
+        if (target.parentElement.id == 'todo-today') {
+            UI.loadProjects('today');
+            UI.expandAllProjects();
+        }
+
+        if (target.parentElement.id == 'todo-week') {
+            UI.loadProjects('thisWeek');
+            UI.expandAllProjects();
+        }
+    }
+
+    static expandAllProjects() {
+        Storage.getProjects().forEach((project) => {
+            UI.expandProject(project);
+        });
+    }
+
+    static initProjectListButtons() {
+        let projectButtons = document.querySelectorAll('.project-button');
+
+        projectButtons.forEach((button) => {
+            button.addEventListener('click', (e) =>{
+
+                console.log(e.target);
+                let projectName = e.target.id;
+                UI.expandProject(projectName);
+            });
+        });
+
     }
 
     static initTodoButtons(project) {
@@ -215,7 +324,8 @@ export default class UI {
         
         document.getElementById('todo-delete').style.display = 'unset';
         document.getElementById('todo-title').value = todo.title;
-        document.getElementById('todo-title').disabled = true;
+        document.getElementById('popup-title').innerHTML = todo.title;
+        //document.getElementById('todo-title').disabled = true;
 
         document.getElementById('todo-description').value = todo.description;
         document.getElementById('todo-due-date').value = todo.dueDate;
@@ -227,26 +337,6 @@ export default class UI {
     
     static openPopup() {
         document.querySelector('.todo-add-popup').classList.toggle('active');
-    }
-
-    static initProjectListButtons() {
-        let projectButtons = document.querySelectorAll('.project-button');
-        let todoAddButton = document.getElementById('todo-add-btn');
-
-        projectButtons.forEach((button) => {
-            button.addEventListener('click', (e) =>{
-
-                console.log(e.target);
-                let projectName = e.target.id;
-                UI.expandProject(projectName);
-            });
-        });
-
-        todoAddButton.addEventListener('click', () => {
-  //          console.log('todo-add-popup -> active');
-            UI.openPopup();
-            UI.initPopupProjects();
-        });
     }
 
     static initPopupButtons() {
@@ -264,6 +354,8 @@ export default class UI {
 
     static popupClose() {
 
+        console.log('popup-close...');
+
         document.getElementById('todo-title').value = '';
         document.getElementById('todo-title').disabled = false;
 
@@ -273,6 +365,7 @@ export default class UI {
         document.getElementById('todo-priority-select').value = 'medium';
         document.getElementById('todo-delete').style.display = 'none';
 
+        document.getElementById('popup-title').innerHTML = '';
 
         document.querySelector('.todo-add-popup').classList.toggle('active');
     }
@@ -290,17 +383,19 @@ export default class UI {
         if (titleValue == '') {
             alert("Title is required");
         } 
-        else if (Storage.getTodo(titleValue) == undefined) {
+        else if (Storage.getTodo(titleValue) == undefined && document.getElementById('popup-title').innerHTML == '') {
             Storage.addTodo(titleValue);
         }
+        else if (Storage.getTodo(titleValue) == undefined && document.getElementById('popup-title').innerHTML != '') {
+            Storage.updateTodo(document.getElementById('popup-title').innerHTML, {title: titleValue});
+        }
+
         let oldProject = Storage.getTodo(titleValue).project;
 
         Storage.updateTodo(titleValue, {project: projectValue});
         Storage.updateTodo(titleValue, {priority: priorityValue});
 
-        if (descriptionValue != '') {
-            Storage.updateTodo(titleValue, {description: descriptionValue});
-        }
+        Storage.updateTodo(titleValue, {description: descriptionValue});
 
         if (dueDateValue != '') {
             dueDateValue = formatISO(new Date(document.getElementById('todo-due-date').value), { representation: 'date' });
@@ -325,54 +420,6 @@ export default class UI {
             projectSelector.appendChild(option);
         });
     }
-
-    // static editItem(target) {
-    //     console.log(target);
-
-    //     const todo = Storage.getTodo(target.parentElement.parentElement.children[1].textContent);
-
-    //     console.log(todo);
-    //     let editor =  target.parentElement.parentElement;
-    //     editor.innerHTML = `<div class='todo-editor'>
-    //                             <textarea id='todo-title' type=text placeholder='Title' maxlength="50" rows='1'></textarea>
-    //                             <textarea id='todo-description' type=text placeholder='Description' rows='4'></textarea>
-
-    //                         </div>`;
-
-    //     document.getElementById('todo-title').value = todo.title;
-    //     document.getElementById('todo-description').value = todo.description;
-
-    // }
-
-    // static addItem(target) {
-
-    //     console.log(target);
-    //     if (target.classList.contains('project-add')) {
-    //         const input = document.querySelector('.project-add-popup').children[0].value;
-    //         Storage.addProject(input);
-    //         UI.loadProjects();
-    //     }
-    //     else 
-    //     {
-    //         const project = target.parentElement.parentElement.parentElement.firstChild.textContent;
-    //         const input = document.querySelector('.todo-add-popup').children[0].value;
-
-    //         if (input == '') alert('Please input Todo Title');
-    //         if (input != '') {
-    //             if (Storage.getList().some((todo) => todo.getTitle() == input)) 
-    //                 alert('Please input Unique Todo Title');
-
-    //             else {
-    //                 Storage.addTodo(input);
-    //                 Storage.updateTodo(input, {project});
-                    
-    //             }
-    //         }
-
-    //         UI.loadProjectContent(project);
-    //     }
-
-    // }
 
     static setStatus(title, status) {
 

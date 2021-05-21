@@ -10,6 +10,8 @@ export {Todo, Storage};
 Storage.loadTodoList();
 //console.log(Storage.getList());
 
+UI.initNavPanel();
+UI.initPopupButtons();
 UI.loadProjects();
 UI.expandProject('default');
 //Storage.addProject('new');

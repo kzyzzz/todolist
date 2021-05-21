@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <title>Todo List</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <link rel="stylesheet" href="css/main.css" />
   </head>
   <body>
@@ -14,22 +16,29 @@
         <div class="todo-add-popup" id="todo-add-popup">
     
             <div id='todo-form'>
+              <div id='popup-title'></div>
               <input type="text" id="todo-title" placeholder="Title" required>              
               <textarea id="todo-description" style="height:100px" placeholder="Todo descripion"></textarea>
-              <div>
-                <label for="project-select">Priority: </label>
-                <select id="todo-priority-select" name="priority-select">
-                  <option value="not set"> </option>
-                  <option value="low">low</option>
-                  <option value="medium">medium</option>
-                  <option value="hight">hight</option>
-                </select>
-                <label for="project-select">Project: </label>
-                <select id="todo-project-select" name="project-select"></select>
-                <label for="todo-due-date">Due date: </label>
-                <input type="date" name="todo-due-date" id="todo-due-date">
+              <div class="todo-switches">
+                <div>
+                  <label for="project-select">Priority: </label>
+                  <select id="todo-priority-select" name="priority-select">
+                    <option value="not set"> </option>
+                    <option value="low">low</option>
+                    <option value="medium">medium</option>
+                    <option value="hight">hight</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="project-select">Project: </label>
+                  <select id="todo-project-select" name="project-select"></select>
+                </div>
+                <div>
+                  <label for="todo-due-date">Due date: </label>
+                  <input type="date" name="todo-due-date" id="todo-due-date">
+                </div>
               </div>
-              <div>
+              <div class='add-edit-todo-buttons'>
                 <button class="form-btn" id="todo-ok">OK</button>
                 <button class="form-btn" id="todo-cancel">Cancel</button>
               </div>
