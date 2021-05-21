@@ -182,15 +182,6 @@ export default class UI {
         
         let container = document.querySelector('.nav-panel');
 
-        container.addEventListener('mouseover', (e) => {
-            container.classList.toggle('active');
-        });
-
-        container.addEventListener('mouseover', (e) => {
-            container.classList.toggle('active');
-        });
-
-        //fot touchscreen
         container.addEventListener('touchstart', (e) => {
             container.classList.toggle('active');
         });
