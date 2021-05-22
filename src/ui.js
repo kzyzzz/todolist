@@ -1,5 +1,6 @@
 import {Storage, Todo} from "./index"
 import { formatISO, isToday, isThisWeek, parseISO } from 'date-fns'
+import { ta } from "date-fns/locale";
 
 export default class UI {
 
@@ -248,19 +249,45 @@ export default class UI {
     }
 
     static triggerNavButton(target) {
-        if (target.parentElement.id == 'todo-add') {
-            UI.openPopup();
-            UI.initPopupProjects();
-        }
+   
 
-        if (target.parentElement.id == 'todo-today') {
-            UI.loadProjects('today');
-            UI.expandAllProjects();
-        }
+        if (target.classList.contains('material-icons')) {
+            UI.triggerNavButton(target.parentElement);
 
-        if (target.parentElement.id == 'todo-week') {
-            UI.loadProjects('thisWeek');
-            UI.expandAllProjects();
+        } else {
+
+            if (target.id == 'todo-add') {
+                UI.openPopup();
+                UI.initPopupProjects();
+            }
+
+            if (target.id == 'todo-today') {
+                document.getElementById('todo-week').classList.remove('active');
+                if (target.classList.contains('active')) {
+                    UI.loadProjects();
+                    UI.expandProject('default');
+                } else {       
+                    UI.loadProjects('today');
+                    UI.expandAllProjects();
+                }
+        
+                target.classList.toggle('active');
+            }
+
+            if (target.id == 'todo-week') {
+
+                document.getElementById('todo-today').classList.remove('active');
+                if (target.classList.contains('active')) {
+                    UI.loadProjects();
+                    UI.expandProject('default');
+                } else {       
+                    UI.loadProjects('thisWeek');
+                    UI.expandAllProjects();
+                }
+        
+                target.classList.toggle('active');
+                
+            }
         }
     }
 
@@ -353,8 +380,6 @@ export default class UI {
     }
 
     static popupClose() {
-
-        console.log('popup-close...');
 
         document.getElementById('todo-title').value = '';
         document.getElementById('todo-title').disabled = false;
