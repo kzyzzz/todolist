@@ -20,9 +20,12 @@
 }
 .content {
     display: flex;
-    margin: 0 auto;
     min-height: 100vh;
 
+}
+h1 {
+    margin-bottom: 2rem;
+    border-bottom: .1rem solid #BDBDBD;
 }
 .nav-panel {
     z-index: 999;
@@ -34,25 +37,29 @@
     overflow: hidden;
     position: fixed;
     height: 100%;
-    transition: all 0.5s;
+    transition: width 0.5s;
     white-space: nowrap;
     color: #ddd;
     font-size: 1.1rem;
     
+}
+.nav-button {
+    list-style: none;
+    padding: 0.5rem;
+    margin: -0.5rem;
+    margin-bottom: 1rem;
 
 }
-li {
-    list-style: none;
-    margin-bottom: 1.2rem;
-}
-li:hover {
+.nav-button:hover {
     cursor: pointer;
     color: #fff;
 }
+.nav-button.active {
+    background-color: #757575;
+}
+
 .nav-panel.active {
-    padding-left: 1rem;
-    width: 45vw;
-    
+    width: 45vw; 
 }
 
 .material-icons,.icon-text {
@@ -65,21 +72,6 @@ li:hover {
     
 }
 
-.btn-round {
-    cursor: pointer;
-    width: 3rem;
-    height: 3rem;
-    font-size: 1.2rem;
-    border-radius: 50%;
-    border: none;
-    transition: all 0.3s;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.23),0 3px 10px rgba(0,0,0,0.16);
-}
-.btn-round:hover {
-    transform: rotate(90deg);
-    scale: 1.05;
-
-}
 
 .project-container {
     display: flex;
@@ -100,12 +92,12 @@ li:hover {
     display: flex;
     flex-direction: column;
     max-height: 3rem;
-    transition: all 0.2s ease-in-out;
+    transition: max-height 0.2s ease-in-out;
 }
 
 .expand {
     max-height: 1400px;
-    transition: all .5s ease-out;
+    transition: max-height .5s ease-out;
 }
 
 .project-content {
@@ -117,7 +109,6 @@ li:hover {
 
 .project-button {   
     padding: 1rem;
-    min-height: 3rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -230,10 +221,11 @@ li:hover {
 .todo-add-popup {
     display: none;
     box-shadow: rgba(0, 0, 0, 0.5) 0px -5px 5px;
-    position: absolute;
+    position: fixed;
     z-index: 999;
     top: 5rem;
     width: 100%;
+    max-width: 1000px;
     height: calc(100vh - 5rem);
     background: #212121;
 }
@@ -330,11 +322,27 @@ label {
       }
       .content {
           flex-direction: row;
+          justify-content: center;
       }
       .nav-panel {
-          order: 1;
+          width: 300px;
+          height: 100vh;
           max-width: 300px;
           justify-content: unset;
+          position: relative;
+          padding-left: 2rem;
+      }
+      .nav-panel.active {
+        width: 300px;
+     }
+     .todo-add-popup {
+         width: 700px;
+         height: 500px;
+         top: calc(50vh - 250px);
+         left: calc(50vw - 350px);
+     }
+      .project {
+          margin-left: unset;
       }
       .todo-switches {
           width: 100%;
