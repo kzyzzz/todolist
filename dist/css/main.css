@@ -327,9 +327,6 @@ label {
     align-self: center;
 }
 
-.add-edit-todo-buttons button{
-    padding: 0.5rem;
-}
 
 .todo-item.todo-inactive {
     opacity: 0.4;
