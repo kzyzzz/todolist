@@ -25,6 +25,7 @@
 }
 h1 {
     margin-bottom: 2rem;
+    padding-top: 2rem;
     border-bottom: .1rem solid #BDBDBD;
 }
 .nav-panel {
@@ -32,11 +33,11 @@ h1 {
     align-items: flex-start;
     border-right: .1rem solid #BDBDBD;
     width: 2rem;
-    padding: 0.5rem;
-    padding-top: 2rem;
+    padding: 0 0.5rem;
+    
     overflow: hidden;
     position: fixed;
-    height: 100%;
+    height: 100vh;
     transition: width 0.5s;
     white-space: nowrap;
     color: #ddd;
@@ -78,6 +79,8 @@ h1 {
     position: relative;
     width: 100vh;
     max-width: 1100px;
+    max-height: 100vh;
+    overflow: auto;
     background: #FAFAFA;
     border-right: 0.1rem solid #BDBDBD;
 }
@@ -276,9 +279,49 @@ label {
 }
 .todo-switches {
     display: flex;
+    margin: 0 auto;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
 }
+.todo-edit-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.add-edit-todo-buttons {
+    display: flex;
+    width: 80%;
+    justify-content: space-around;
+}
+
+.delete-todo-button {
+    margin-top: 3rem;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+#todo-delete{
+    cursor: pointer;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border: none;
+    background-color: #D2324A;
+    transition: all 0.5s;
+}
+
+#todo-delete:hover {
+    color: #eee;
+    transform: rotate(360deg);
+}
+#todo-delete .material-icons {
+    margin: 0;
+    padding: 0;
+}
+
 .add-edit-todo-buttons {
     margin-top: 2rem;
     align-self: center;
@@ -299,6 +342,7 @@ label {
 
 .todo-item .fa-circle-o {
     display: flex;
+    cursor: pointer;  
     font-size: 2rem;
 }
 .todo-item.todo-inactive .fa-circle-o {
@@ -309,7 +353,12 @@ label {
 }
 .todo-item.todo-inactive .fa-check-circle-o {
     display: flex;
+    cursor: pointer;  
     font-size: 2rem;
+}
+
+.todo-inactive .todo-title{
+    text-decoration: line-through;
 }
 
 
@@ -326,9 +375,8 @@ label {
       }
       .nav-panel {
           width: 300px;
-          height: 100vh;
+          overflow: auto;
           max-width: 300px;
-          justify-content: unset;
           position: relative;
           padding-left: 2rem;
       }
