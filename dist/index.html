@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta name='viewport' 
+     content='width=device-width, initial-scale=1.0, maximum-scale=1.0, 
+     user-scalable=0' >
+
     <title>Todo List</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -21,7 +24,10 @@
         <div class="todo-add-popup" id="todo-add-popup">
     
             <div id='todo-form'>
-              <div id='popup-title'></div>
+              <div class='todo-edit-header'>
+                <div id='popup-title'></div>
+              </div>
+              
               <input type="text" id="todo-title" placeholder="Title" required>              
               <textarea id="todo-description" style="height:100px" placeholder="Todo descripion"></textarea>
               <div class="todo-switches">
@@ -44,12 +50,15 @@
                 </div>
               </div>
               <div class='add-edit-todo-buttons'>
-                <button class="form-btn" id="todo-ok">OK</button>
-                <button class="form-btn" id="todo-cancel">Cancel</button>
+                <button class="form-btn" id="todo-ok">SAVE</button>
+                <button class="form-btn" id="todo-cancel">CANCEL</button>
               </div>
-              <div>
-                <button class="form-delete" id="todo-delete">Delete</button>
+              <div class='delete-todo-button'>
+                <button id="todo-delete" style='display:none'><span  class="material-icons">
+                  delete
+                  </span></button>
               </div>
+              
             </div>
 
         </div>

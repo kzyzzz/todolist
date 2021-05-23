@@ -6,15 +6,4 @@ export {Todo, Storage};
 
 
 
-// list.save();
-Storage.loadTodoList();
-//console.log(Storage.getList());
-
-UI.initNavPanel();
-UI.initPopupButtons();
-UI.loadProjects();
-UI.expandProject('default');
-//Storage.addProject('new');
-//Storage.updateTodo('nnnnn', {project: 'New2'});
-
-//Storage.getTodoList();
+UI.loadSite();

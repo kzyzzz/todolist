@@ -4,6 +4,41 @@ import { ta } from "date-fns/locale";
 
 export default class UI {
 
+    static loadSite() {
+        Storage.loadTodoList();
+
+        if (Storage.getList() == '') {
+            Storage.addTodo('Go to the gym');
+            Storage.addTodo('Ikea delivery');
+            Storage.addTodo('Walk the dog');
+            Storage.addTodo('Cook breakfast');
+            Storage.addTodo('Plan vacation');
+            Storage.addTodo('New coding task');
+            Storage.addTodo('Buy groceries');
+            Storage.addTodo('Order concert tickets');
+            Storage.addTodo('Water my plants');
+
+            Storage.updateTodo('Go to the gym', {project: 'new', description: 'meet in lobby', priority: 'medium', dueDate: '2021-06-06'});
+            Storage.updateTodo('Ikea delivery', {description: 'tel: 355-77-13', priority: 'hight', dueDate: '2021-05-23'});
+            Storage.updateTodo('Walk the dog', {description: 'colar at the entrance'});
+            Storage.updateTodo('Cook breakfast', {description: 'eggs, bacon', priority: 'medium', status: 'inactive'});
+            Storage.updateTodo('Plan vacation', { description: 'booking? arirBnb?', priority: 'low', dueDate: '2021-07-06'});
+            Storage.updateTodo('New coding task', {description: 'TheOdinProject: React?'});
+            Storage.updateTodo('Buy groceries', {description: 'Milk, eggs, vegs', priority: 'medium'});
+            Storage.updateTodo('Order concert tickets', {description: 'Pori Jazz 2nd day', priority: 'low', dueDate: '2021-07-01'});
+            Storage.updateTodo('Water my plants', {priority: 'hight', status: 'inactive'});
+
+            
+
+            Storage.loadTodoList();
+        }
+
+        UI.initNavPanel();
+        UI.initPopupButtons();
+        UI.loadProjects();
+        UI.expandProject('default');
+    }
+
     static loadProjects(date = '') {
 
         const projectsList = document.getElementById('projects-list');
@@ -184,10 +219,14 @@ export default class UI {
         let container = document.querySelector('.nav-panel');
 
         container.addEventListener('mouseover', (e) => {
-            container.classList.toggle('active');
+            container.classList.add('active');
         });
 
         container.addEventListener('mouseout', (e) => {
+            container.classList.remove('active');
+        });
+
+        container.addEventListener('click', (e) => {
             container.classList.toggle('active');
         });
 
@@ -288,6 +327,10 @@ export default class UI {
                 target.classList.toggle('active');
                 
             }
+
+            if (target.id == 'todo-info') {
+                alert(`Developed by Vladimir Baraev\nGithub: kzyzzz\nkzyzzz@gmail.com`);
+            }
         }
     }
 
@@ -303,8 +346,16 @@ export default class UI {
         projectButtons.forEach((button) => {
             button.addEventListener('click', (e) =>{
 
-                console.log(e.target);
                 let projectName = e.target.id;
+                console.log(e.target);
+                if (e.target.classList.contains('project-title')) {
+                    projectName = e.target.textContent;
+                }
+                if (e.target.classList.contains('project-items-counter')) {
+                    projectName = e.target.parentElement.id;
+                }
+
+                
                 UI.expandProject(projectName);
             });
         });
@@ -369,6 +420,7 @@ export default class UI {
     static initPopupButtons() {
         let ok = document.getElementById('todo-ok');
         let calcel = document.getElementById('todo-cancel');
+        let del = document.getElementById('todo-delete');
 
         calcel.addEventListener('click', (e) =>{
             UI.popupClose();
@@ -377,6 +429,19 @@ export default class UI {
         ok.addEventListener('click', (e) =>{
             UI.todoAddEdit();
         });
+
+        del.addEventListener('click', (e) => {
+            UI.todoDelete();
+        });
+    }
+
+    static todoDelete() {
+        const title = document.getElementById('popup-title').textContent;
+        const project = Storage.getTodo(title).project;
+
+        Storage.removeTodo(title);
+        UI.loadProjectContent(project);
+        UI.popupClose();
     }
 
     static popupClose() {

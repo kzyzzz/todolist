@@ -20,6 +20,6 @@ export default class Todo {
     }
     
     getInfo() {
-        return {title: this.title, description: this.description, dueDate: this.dueDate, priority: this.priority};
+        return {title: this.title, description: this.description, dueDate: this.dueDate, priority: this.priority, project: this.project};
     }
 }
