@@ -297,7 +297,7 @@ label {
 }
 
 .delete-todo-button {
-    margin-top: 3rem;
+    margin-top: 2.5rem;
     display: flex;
     width: 100%;
     justify-content: flex-end;
@@ -325,6 +325,10 @@ label {
 .add-edit-todo-buttons {
     margin-top: 2rem;
     align-self: center;
+}
+
+.add-edit-todo-buttons button{
+    padding: 0.5rem;
 }
 
 .todo-item.todo-inactive {
