@@ -29,7 +29,7 @@
               </div>
               
               <input type="text" id="todo-title" placeholder="Title" required>              
-              <textarea id="todo-description" style="height:100px" placeholder="Todo descripion"></textarea>
+              <textarea id="todo-description" style="height:4rem" placeholder="Todo descripion"></textarea>
               <div class="todo-switches">
                 <div>
                   <label for="project-select">Priority: </label>
@@ -49,10 +49,14 @@
                   <input type="date" name="todo-due-date" id="todo-due-date">
                 </div>
               </div>
-              <div class='add-edit-todo-buttons'>
-                <button class="form-btn" id="todo-ok">SAVE</button>
-                <button class="form-btn" id="todo-cancel">CANCEL</button>
-              </div>
+
+                <button class="form-btn" id="todo-ok"><span class="material-icons">
+                  done
+                  </span></button>
+                <button class="form-btn" id="todo-cancel"><span class="material-icons">
+                  arrow_back
+                  </span></button>
+
               <div class='delete-todo-button'>
                 <button id="todo-delete" style='display:none'><span  class="material-icons">
                   delete
