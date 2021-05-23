@@ -19,14 +19,14 @@ export default class UI {
             Storage.addTodo('Water my plants');
 
             Storage.updateTodo('Go to the gym', {project: 'new', description: 'meet in lobby', priority: 'medium', dueDate: '2021-06-06'});
-            Storage.updateTodo('Ikea delivery', {description: 'tel: 355-77-13', priority: 'hight', dueDate: '2021-05-23'});
+            Storage.updateTodo('Ikea delivery', {description: 'tel: 355-77-13', priority: 'high', dueDate: '2021-05-23'});
             Storage.updateTodo('Walk the dog', {description: 'colar at the entrance'});
             Storage.updateTodo('Cook breakfast', {description: 'eggs, bacon', priority: 'medium', status: 'inactive'});
             Storage.updateTodo('Plan vacation', { description: 'booking? arirBnb?', priority: 'low', dueDate: '2021-07-06'});
             Storage.updateTodo('New coding task', {description: 'TheOdinProject: React?'});
             Storage.updateTodo('Buy groceries', {description: 'Milk, eggs, vegs', priority: 'medium'});
             Storage.updateTodo('Order concert tickets', {description: 'Pori Jazz 2nd day', priority: 'low', dueDate: '2021-07-01'});
-            Storage.updateTodo('Water my plants', {priority: 'hight', status: 'inactive'});
+            Storage.updateTodo('Water my plants', {priority: 'high', status: 'inactive'});
 
             
 
@@ -180,7 +180,7 @@ export default class UI {
         const priorityDiv = document.createElement('div');
         priorityDiv.classList.add('priority-box');
 
-        if (todo.priority == 'hight') {
+        if (todo.priority == 'high') {
             priorityDiv.classList.add('box-red');
         } else if (todo.priority == 'medium') {
             priorityDiv.classList.add('box-yellow');
