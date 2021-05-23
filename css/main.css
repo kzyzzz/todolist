@@ -226,10 +226,10 @@ h1 {
     box-shadow: rgba(0, 0, 0, 0.5) 0px -5px 5px;
     position: fixed;
     z-index: 999;
-    top: 5rem;
+    top: 2rem;
     width: 100%;
     max-width: 1000px;
-    height: calc(100vh - 5rem);
+    height: calc(100vh - 2rem);
     background: #212121;
 }
 
@@ -271,7 +271,7 @@ button, input, select {
 }
 
 select, input[type=date] {
-    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 label {
@@ -297,10 +297,11 @@ label {
 }
 
 .delete-todo-button {
-    margin-top: 2.5rem;
     display: flex;
     width: 100%;
+    height: 100%;
     justify-content: flex-end;
+    align-items: flex-end;
 }
 
 #todo-delete{
@@ -322,11 +323,24 @@ label {
     padding: 0;
 }
 
-.add-edit-todo-buttons {
-    margin-top: 2rem;
-    align-self: center;
+.form-btn {
+    position: absolute;
+    top: 1rem;
+    background: transparent;
+    border: none;
+    color: #ddd;
+}
+.form-btn:hover {
+    cursor: pointer;
+    color: #fff;
+}
+#todo-cancel{
+    left: 1rem;
 }
 
+#todo-ok{
+    right: 1rem;
+}
 
 .todo-item.todo-inactive {
     opacity: 0.4;
@@ -366,6 +380,9 @@ label {
     and (orientation : landscape) {
         :root {
             font-size: 2.5vw;
+        }
+        .todo-switches {
+            flex-direction: row;
         }
     }
 
