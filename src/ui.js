@@ -219,11 +219,11 @@ export default class UI {
         let container = document.querySelector('.nav-panel');
 
         container.addEventListener('mouseover', (e) => {
-            container.classList.toggle('active');
+            container.classList.add('active');
         });
 
         container.addEventListener('mouseout', (e) => {
-            container.classList.toggle('active');
+            container.classList.remove('active');
         });
 
         const menu = document.createElement('ul');
@@ -284,7 +284,8 @@ export default class UI {
     }
 
     static triggerNavButton(target) {
-   
+        
+        document.querySelector('.nav-panel').classList.remove('active');
 
         if (target.classList.contains('material-icons')) {
             UI.triggerNavButton(target.parentElement);
