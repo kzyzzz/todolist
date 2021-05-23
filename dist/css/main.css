@@ -379,7 +379,7 @@ label {
 @media only screen
     and (orientation : landscape) {
         :root {
-            font-size: 2.5vw;
+            font-size: 2vw;
         }
         .todo-switches {
             flex-direction: row;
