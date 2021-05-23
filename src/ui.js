@@ -226,10 +226,6 @@ export default class UI {
             container.classList.remove('active');
         });
 
-        container.addEventListener('click', (e) => {
-            container.classList.toggle('active');
-        });
-
         const menu = document.createElement('ul');
 
         const home = document.createElement('li');
