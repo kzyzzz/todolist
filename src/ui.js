@@ -219,11 +219,11 @@ export default class UI {
         let container = document.querySelector('.nav-panel');
 
         container.addEventListener('mouseover', (e) => {
-            container.classList.add('active');
+            container.classList.toggle('active');
         });
 
         container.addEventListener('mouseout', (e) => {
-            container.classList.remove('active');
+            container.classList.toggle('active');
         });
 
         const menu = document.createElement('ul');
