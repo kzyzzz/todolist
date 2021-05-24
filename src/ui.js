@@ -1,4 +1,4 @@
-import {Storage, Todo} from "./index"
+import {Storage} from "./index"
 import { formatISO, isToday, isThisWeek, parseISO } from 'date-fns'
 import { ta } from "date-fns/locale";
 
